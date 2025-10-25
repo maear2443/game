@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧟 좀비 타워 디펜스</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 상단 정보바 -->
+        <div id="top-bar">
+            <div class="info-group">
+                <span class="info-label">💰 골드:</span>
+                <span id="gold-display">150</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">❤️ 생명:</span>
+                <span id="lives-display">20</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">🌊 웨이브:</span>
+                <span id="wave-display">0/10</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">🎯 점수:</span>
+                <span id="score-display">0</span>
+            </div>
+        </div>
+
+        <!-- 게임 캔버스 -->
+        <div id="canvas-container">
+            <canvas id="game-canvas"></canvas>
+            <div id="wave-announcement"></div>
+        </div>
+
+        <!-- 타워 선택 패널 -->
+        <div id="tower-panel">
+            <div class="tower-button" data-type="shooter">
+                <div class="tower-icon">🔫</div>
+                <div class="tower-name">총잡이</div>
+                <div class="tower-cost">💰 100</div>
+                <div class="tower-stats">⚔️ 20 | 📏 3 | ⚡ 0.5s</div>
+            </div>
+            <div class="tower-button" data-type="sniper">
+                <div class="tower-icon">🎯</div>
+                <div class="tower-name">스나이퍼</div>
+                <div class="tower-cost">💰 200</div>
+                <div class="tower-stats">⚔️ 80 | 📏 6 | ⚡ 2s</div>
+            </div>
+            <div class="tower-button" data-type="flame">
+                <div class="tower-icon">🔥</div>
+                <div class="tower-name">화염</div>
+                <div class="tower-cost">💰 150</div>
+                <div class="tower-stats">⚔️ 15 | 📏 2 | ⚡ 0.3s</div>
+            </div>
+            <div class="tower-button" data-type="slow">
+                <div class="tower-icon">❄️</div>
+                <div class="tower-name">슬로우</div>
+                <div class="tower-cost">💰 120</div>
+                <div class="tower-stats">⚔️ 5 | 📏 3 | 🐌 50%</div>
+            </div>
+        </div>
+
+        <!-- 컨트롤 패널 -->
+        <div id="control-panel">
+            <button id="start-wave-btn" class="control-btn">▶️ 웨이브 시작</button>
+            <button id="pause-btn" class="control-btn">⏸️ 일시정지</button>
+            <button id="speed-btn" class="control-btn">⏩ 배속 (1x)</button>
+            <button id="restart-btn" class="control-btn">🔄 재시작</button>
+        </div>
+
+        <!-- 타워 정보/업그레이드 패널 -->
+        <div id="tower-info-panel" class="hidden">
+            <h3>타워 정보</h3>
+            <div id="tower-info-content"></div>
+            <div id="tower-info-actions">
+                <button id="upgrade-btn" class="action-btn">⬆️ 업그레이드</button>
+                <button id="sell-btn" class="action-btn">💰 판매</button>
+                <button id="close-info-btn" class="action-btn">❌ 닫기</button>
+            </div>
+        </div>
+
+        <!-- 게임 오버 패널 -->
+        <div id="game-over-panel" class="hidden">
+            <h2 id="game-over-title"></h2>
+            <p id="game-over-message"></p>
+            <button id="restart-game-btn" class="action-btn">🔄 다시 시작</button>
+        </div>
+    </div>
+
+    <!-- JavaScript 모듈 로드 -->
+    <script src="js/utils.js"></script>
+    <script src="js/tower.js"></script>
+    <script src="js/zombie.js"></script>
+    <script src="js/projectile.js"></script>
+    <script src="js/wave.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
