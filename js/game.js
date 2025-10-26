@@ -43,6 +43,7 @@ class Game {
             gameSpeed: 1,
             isGameOver: false,
             isVictory: false,
+            activeZombies: 0,
             towers: [],
             zombies: [],
             projectiles: [],
@@ -331,6 +332,9 @@ class Game {
             return true;
         });
 
+        // 활성 좀비 수 업데이트
+        this.state.activeZombies = this.state.zombies.length;
+
         // 웨이브 완료 체크
         if (this.waveManager.checkWaveComplete(this.state.zombies.length)) {
             if (this.waveManager.currentWave >= CONFIG.TOTAL_WAVES) {
@@ -388,8 +392,70 @@ class Game {
         // 발사체
         this.state.projectiles.forEach(projectile => projectile.render(this.ctx));
 
+        // 게임 안내 메시지 렌더링
+        this.renderGameMessages();
+
         // UI 업데이트
         this.ui.update(this.state);
+    }
+
+    /**
+     * 게임 안내 메시지 렌더링
+     */
+    renderGameMessages() {
+        const centerX = this.canvas.width / 2;
+        const centerY = this.canvas.height / 2;
+
+        // 게임 시작 전 안내
+        if (this.waveManager.currentWave === 0 && !this.waveManager.waveInProgress) {
+            this.ctx.save();
+            this.ctx.font = 'bold 24px Arial';
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+
+            // 배경
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            this.ctx.fillRect(centerX - 200, centerY - 80, 400, 160);
+
+            // 테두리
+            this.ctx.strokeStyle = '#ffd700';
+            this.ctx.lineWidth = 3;
+            this.ctx.strokeRect(centerX - 200, centerY - 80, 400, 160);
+
+            // 텍스트
+            this.ctx.fillStyle = '#ffd700';
+            this.ctx.fillText('🧟 좀비 타워 디펜스', centerX, centerY - 40);
+
+            this.ctx.font = '16px Arial';
+            this.ctx.fillStyle = '#fff';
+            this.ctx.fillText('타워를 배치하고', centerX, centerY);
+            this.ctx.fillText('"게임 시작" 버튼을 눌러주세요!', centerX, centerY + 25);
+
+            this.ctx.restore();
+        }
+
+        // 웨이브 준비 시간 표시
+        if (!this.waveManager.waveInProgress && this.waveManager.currentWave > 0 && this.waveManager.prepTime < CONFIG.WAVE_PREP_TIME) {
+            this.ctx.save();
+            this.ctx.font = 'bold 36px Arial';
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+
+            const timeLeft = Math.ceil(CONFIG.WAVE_PREP_TIME - this.waveManager.prepTime);
+
+            // 배경
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            this.ctx.fillRect(centerX - 150, centerY - 60, 300, 120);
+
+            // 텍스트
+            this.ctx.fillStyle = '#90ee90';
+            this.ctx.fillText(`다음 웨이브까지`, centerX, centerY - 20);
+            this.ctx.font = 'bold 48px Arial';
+            this.ctx.fillStyle = '#ffd700';
+            this.ctx.fillText(`${timeLeft}초`, centerX, centerY + 30);
+
+            this.ctx.restore();
+        }
     }
 
     /**

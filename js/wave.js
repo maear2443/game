@@ -132,6 +132,8 @@ class WaveManager {
      * 준비 완료 여부
      */
     isPrepComplete() {
+        // 첫 웨이브는 바로 시작 가능
+        if (this.currentWave === 0) return true;
         return this.prepTime >= CONFIG.WAVE_PREP_TIME;
     }
 

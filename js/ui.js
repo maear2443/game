@@ -8,6 +8,7 @@ class UIManager {
         this.goldDisplay = document.getElementById('gold-display');
         this.livesDisplay = document.getElementById('lives-display');
         this.waveDisplay = document.getElementById('wave-display');
+        this.zombiesDisplay = document.getElementById('zombies-display');
         this.scoreDisplay = document.getElementById('score-display');
         this.waveAnnouncement = document.getElementById('wave-announcement');
 
@@ -74,15 +75,25 @@ class UIManager {
         this.goldDisplay.textContent = formatNumber(state.gold);
         this.livesDisplay.textContent = state.lives;
         this.waveDisplay.textContent = `${state.wave.current}/${state.wave.total}`;
+
+        // 남은 적 수 (스폰 대기 + 활성 좀비)
+        const totalEnemies = state.wave.zombiesLeft + state.activeZombies;
+        this.zombiesDisplay.textContent = totalEnemies;
+
         this.scoreDisplay.textContent = formatNumber(state.score);
 
         // 웨이브 버튼 상태
         if (state.wave.inProgress) {
             this.startWaveBtn.disabled = true;
-            this.startWaveBtn.textContent = `⏳ 웨이브 진행중...`;
+            const progress = Math.floor(state.wave.progress);
+            this.startWaveBtn.textContent = `⏳ 진행중 (${progress}%)`;
         } else if (state.wave.prepComplete) {
             this.startWaveBtn.disabled = false;
-            this.startWaveBtn.textContent = '▶️ 웨이브 시작';
+            if (state.wave.current === 0) {
+                this.startWaveBtn.textContent = '▶️ 게임 시작!';
+            } else {
+                this.startWaveBtn.textContent = `▶️ 웨이브 ${state.wave.current + 1} 시작`;
+            }
         } else {
             this.startWaveBtn.disabled = true;
             const timeLeft = Math.ceil(state.wave.prepTime);
